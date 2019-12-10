@@ -31,7 +31,7 @@ public class TheGame extends JFrame implements Runnable {
 		ball = new Ball();
 		addKeyListener(ball);
 		
-	    Platform p = new Platform();
+	    Platform p = new Platform(score);
 	    p.setX(WIDTH/2);
 		allPlatforms = new ArrayList<Platform>();
 		allPlatforms.add(p);
@@ -86,11 +86,14 @@ public class TheGame extends JFrame implements Runnable {
 
 	@Override
 	public void run() {
+		boolean attacked = false;
 		while(ball.getY() < HEIGHT) {
+			if(attacked) break;
+			
 			ball.move();
 			tmp++;
 			if(tmp == pmax) {
-				allPlatforms.add(new Platform());
+				allPlatforms.add(new Platform(score));
 				tmp = 0;
 			}
 			
@@ -99,10 +102,14 @@ public class TheGame extends JFrame implements Runnable {
 				p.update();
 				
 				if(p.hitTest(ball.getX(), ball.getY())) {
-					ball.bounce();
+					if(p.isMonster())
+						attacked = true;
+					else {
+						ball.bounce();
 					
-					this.score++;
-					setTitle(score);
+						this.score++;
+						setTitle(score);
+					}
 				}
 				if(!p.isVisible()) {
 					allPlatforms.remove(i);

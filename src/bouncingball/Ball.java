@@ -50,13 +50,13 @@ public class Ball extends Object implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==37) leftPressed = true;
-		if(e.getKeyCode()==39) rightPressed = true;
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) leftPressed = true;
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightPressed = true;
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode()==37) leftPressed = false;
-		if(e.getKeyCode()==39) rightPressed = false;
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) leftPressed = false;
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightPressed = false;
 	}
 	@Override
 	public void keyTyped(KeyEvent arg0) {
