@@ -2,6 +2,7 @@ package bouncingball;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class TheGame extends JFrame implements Runnable {
 	private BufferedImage theBuffer;
 	private Graphics offScreen;
 	private ArrayList<Platform> allPlatforms;
+	private ArrayList<Fire> allFires;
 	private Ball ball;
 	private int score;
 	
@@ -36,6 +38,8 @@ public class TheGame extends JFrame implements Runnable {
 		allPlatforms = new ArrayList<Platform>();
 		allPlatforms.add(p);
 		
+		allFires = new ArrayList<Fire>();
+		
 		pmax = 20;
 		tmp = 0;
 		theBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
@@ -50,7 +54,7 @@ public class TheGame extends JFrame implements Runnable {
 	}
 	
 	public void setTitle(int score) {
-		this.setTitle("Bouncing Ball - " + score + " points");
+		this.setTitle("Bouncing Ball by SunMoon - " + score + " points");
 	}
 	
 	public static void main(String[] args) {
@@ -75,14 +79,34 @@ public class TheGame extends JFrame implements Runnable {
 		if(offScreen == null) return;
 		offScreen.setColor(Color.PINK);
 		offScreen.fillRect(0, 0, WIDTH, HEIGHT);
-		
+
 		for(Platform p : allPlatforms) {
 			p.paint(offScreen);
 		}
 		
+		for(Fire f : allFires) {
+			f.paint(offScreen);
+		}
+		
 		ball.paint(offScreen);
 		g.drawImage(theBuffer, 0, 0, (ImageObserver) this);
-
+	}
+	 
+	public void fireMonster() {
+		for(int i=0; i<allFires.size(); i++) {
+			Fire f = allFires.get(i);
+			Rectangle rf = f.getBounds();
+			for(int j=0; j<allPlatforms.size(); j++) {
+				Platform p = allPlatforms.get(j);
+				if(p.isMonster()) {
+					Rectangle rp = p.getBounds();
+					if(rf.intersects(rp)) {
+						allPlatforms.remove(j);
+						allFires.remove(i);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -97,6 +121,12 @@ public class TheGame extends JFrame implements Runnable {
 				allPlatforms.add(new Platform(score));
 				tmp = 0;
 			}
+			
+			if(ball.isSpace()) {
+				allFires.add(new Fire(ball.x, ball.y));
+			}
+			
+			fireMonster();
 			
 			for(int i=0; i < allPlatforms.size(); i++) {
 				Platform p = allPlatforms.get(i);
@@ -122,6 +152,14 @@ public class TheGame extends JFrame implements Runnable {
 					allPlatforms.remove(i);
 				}
 			}
+			for (int i=0; i < allFires.size(); i++) {
+	            Fire f = allFires.get(i);
+	            f.update();
+	            
+	            if (!f.isVisible()) {
+	            	allFires.remove(i);
+	            }
+	        }
 			
 			repaint();
 			try {

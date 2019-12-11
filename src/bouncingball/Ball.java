@@ -6,12 +6,11 @@ import java.awt.event.KeyListener;
 
 public class Ball extends Object implements KeyListener {
 	private double vX,vY;
-	private boolean leftPressed,rightPressed;
-	
+	private boolean leftPressed,rightPressed,spacePressed;
 	public Ball() {
 		super();
 		
-		leftPressed = rightPressed = false;
+		leftPressed = rightPressed = spacePressed = false;
 		x = TheGame.WIDTH / 2;
 		y = -50;
 		vX = vY = 0.0;
@@ -48,20 +47,26 @@ public class Ball extends Object implements KeyListener {
 			vX *= -1;
 	}
 	
+	public boolean isSpace() {
+		return spacePressed;
+	}
+    
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) leftPressed = true;
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightPressed = true;
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) spacePressed = true;
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) leftPressed = false;
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightPressed = false;
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) spacePressed = false;
 	}
+
 	@Override
-	public void keyTyped(KeyEvent arg0) {
+	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
