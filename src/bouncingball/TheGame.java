@@ -106,7 +106,7 @@ public class TheGame extends JFrame implements Runnable {
 					if(p.isMonster()) {
 						attacked = true;
 					} else if(p.isCoin()) {
-						allPlatforms.remove(i);
+						p.changePlatform();
 						ball.bounce();
 						
 						this.score+=10;

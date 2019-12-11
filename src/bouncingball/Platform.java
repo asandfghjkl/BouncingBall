@@ -74,4 +74,13 @@ public class Platform extends Object{
 	public boolean isCoin() {
 		return this.coin;
 	}
+	
+	public void changePlatform() {
+		if(this.coin) {
+			this.coin = false;
+			initPlatform();
+		}
+			
+
+	}
 }
