@@ -23,7 +23,7 @@ public class TheGame extends JFrame implements Runnable {
 	
 	public TheGame() {
 		super();
-		ImageIcon img = new ImageIcon("src/resources/ball.png");
+		ImageIcon img = new ImageIcon("src/resources/BouncingBall.png");
 		this.setIconImage(img.getImage());
 		score = 0;
 		setTitle(score);
@@ -57,6 +57,7 @@ public class TheGame extends JFrame implements Runnable {
 		start();
 		TheGame bouncingball = new TheGame();
 		bouncingball.setSize(WIDTH, HEIGHT);
+		bouncingball.setLocationRelativeTo(null);
 		bouncingball.setResizable(false);
 		bouncingball.setVisible(true);
 	}
@@ -81,7 +82,7 @@ public class TheGame extends JFrame implements Runnable {
 		
 		ball.paint(offScreen);
 		g.drawImage(theBuffer, 0, 0, (ImageObserver) this);
-		
+
 	}
 
 	@Override
@@ -102,9 +103,15 @@ public class TheGame extends JFrame implements Runnable {
 				p.update();
 				
 				if(p.hitTest(ball.getX(), ball.getY())) {
-					if(p.isMonster())
+					if(p.isMonster()) {
 						attacked = true;
-					else {
+					} else if(p.isCoin()) {
+						allPlatforms.remove(i);
+						ball.bounce();
+						
+						this.score+=10;
+						setTitle(score);
+					} else {
 						ball.bounce();
 					
 						this.score++;
