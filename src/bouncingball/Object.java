@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-abstract class Object {
+public class Object {
 	protected int x, y;
 	protected static int WIDTH;
 	protected static int HEIGHT;
